@@ -29,8 +29,10 @@ public class LoginController {
 
     @PostMapping("/token")
     public ResponseEntity<AuthenticationResponse> createAuthToken(@RequestBody AuthenticationRequest authRequest) {
+        // TODO: 1/11/22 shadab.khan@ihsmarkit.com move it to the service
         final User user = userService.loadUserByUsername(authRequest.getUsername());
         if (!user.getPassword().equals(authRequest.getPassword())) {
+            log.error("incorrect password for user {}", user.getUsername());
             throw new IncorrectPasswordException("incorrect password");
         }
         final String jwt = jwtUtil.generateToken(user);
