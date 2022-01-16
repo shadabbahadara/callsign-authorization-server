@@ -27,7 +27,7 @@ public class UserServiceImpl implements UserService {
 			return user.get();
 		} else {
 			log.error("user does not exist: {}", username);
-			throw new UserNotFoundException("user does not exist: " + username);
+			throw new UserNotFoundException("user does not exist");
 		}
 	}
 

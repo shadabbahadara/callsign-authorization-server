@@ -1,4 +1,4 @@
-package com.callsign.authorization.util;
+package com.callsign.authorization.service;
 
 import com.callsign.authorization.model.User;
 import io.jsonwebtoken.Jwts;
@@ -11,9 +11,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Service
-public class JwtUtil {
+public class JwtService {
     @Value("${jwt.secret}")
     private String SECRET_KEY;
+
+    @Value("${jwt.token.expiration}")
+    private long expiration;
 
     public String generateToken(User userDetails) {
         Map<String, Object> claims = new HashMap<>();
@@ -28,7 +31,7 @@ public class JwtUtil {
                 .setClaims(claims)
                 .setSubject(subject)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24))
+                .setExpiration(new Date(System.currentTimeMillis() + expiration))
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY).compact();
     }
 }
